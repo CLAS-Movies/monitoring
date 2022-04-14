@@ -1,20 +1,58 @@
 groups:
   - name: AppAlerts
     rules:
-      - alert: WARNING-HighThroughput
-        expr: rate(hello_info_count_total[1m]) > 10
+#      - alert: WARNING-HighThroughput
+#        expr: rate(hello_info_count_total[1m]) > 10
+#        for: 10s
+#        labels:
+#          severity: warning
+#        annotations:
+#          summary: Increased info retrieval rate {{ $labels.value}} {{ $value }}
+#          description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+#
+#      - alert: CRITICAL-HighThroughput
+#        expr: rate(hello_info_count_total[1m]) > 50
+#        for: 10s
+#        labels:
+#          severity: critical
+#        annotations:
+#          summary: Increased info retrieval rate {{ $labels.value}} {{ $value }}
+#          description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+#     performance alert
+      - alert: WARNING-HighCompletionTime
+        expr: rate(movie_getMovies_time_seconds_sum[1m]) > 10
         for: 10s
         labels:
           severity: warning
         annotations:
-          summary: Increased info retrieval rate {{ $labels.value}} {{ $value }}
-          description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          summary: Increased data retrieval time {{ $labels.value}} {{ $value }}
+          description: "Movie GetAll call is slow\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
-      - alert: CRITICAL-HighThroughput
-        expr: rate(hello_info_count_total[1m]) > 50
+      - alert: CRITICAL-HighCompletionTime
+        expr: movie_getMovies_time_seconds_sum > 50
         for: 10s
         labels:
           severity: critical
         annotations:
-          summary: Increased info retrieval rate {{ $labels.value}} {{ $value }}
-          description: "A container has disappeared\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+          summary: Increased data retrieval time {{ $labels.value}} {{ $value }}
+          description: "Movie GetAll call is slow\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+#     quality alert
+      - alert: WARNING-HighFailureRate
+        expr: rate(user_bugGenerator_time_seconds_count[1m]) > 5
+        for: 10s
+        labels:
+          severity: warning
+        annotations:
+          summary: Increased failure rate {{ $labels.value}} {{ $value }}
+          description: "UserInsert has high failure rate\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+      - alert: CRITICAL-HighFailureRate
+        expr: rate(user_bugGenerator_time_seconds_count[1m]) > 10
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: Increased failure rate {{ $labels.value}} {{ $value }}
+          description: "UserInsert has high failure rate\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
